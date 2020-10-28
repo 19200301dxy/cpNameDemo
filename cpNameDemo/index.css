@@ -1,9 +1,10 @@
-body{
+body {
     width: 100%;
     height: 100%;
     background-color: rgb(146, 126, 165);
 }
-h1{
+
+h1 {
     width: 600px;
     height: 50px;
     margin: 0 auto;
@@ -11,41 +12,51 @@ h1{
     color: ivory;
     text-align: center;
     font-size: 50px;
-    font-family: "Comic Sans MS",'Hiragino Sans GB', sans-serif;
+    font-family: "Comic Sans MS", 'Hiragino Sans GB', sans-serif;
 }
-.name{
+
+.name {
     width: 600px;
     height: 50px;
     margin: 0 auto;
     margin-top: 100px;
     /* background-color: dodgerblue; */
 }
-.name input{
+
+.name input {
     width: 250px;
     height: 50px;
     font-size: 25px;
     /* 清除文本框样式 */
-	margin: 0;
-	padding: 0;
-	border: none;
-	outline: none;
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
     outline-offset: 0;
-    text-indent: 10px; /*输入框中输入文字时前面的一段距离*/
+    text-indent: 16px;
+    /*输入框中输入文字时前面的一段距离*/
+    vertical-align: middle;
+    /*解决输入文字时文本框移动问题*/
 }
-button{
+
+button {
     width: 80px;
     height: 50px;
     float: right;
     /* background-color: dimgrey; */
 }
-.style{
-    width: 300px;
-    margin: auto;
-    margin-top:20px;
+
+.style {
+    width: 200px;
+
+    margin:auto;
+    margin-top: 20px;
     /* background-color: aquamarine; */
-color: ivory;
+    color: ivory;
+    text-align: center;
 }
-input[type="radio"] {
+
+.style input[type="radio"] {
     width: 1.2rem;
     height: 1.2rem;
     background-color: ivory;
@@ -54,30 +65,34 @@ input[type="radio"] {
     border-radius: 100%;
     font-size: 0.8rem;
 
-    margin: 0 80px 0 0;
+    margin: 0 20px 0 0;
     padding: 0;
     position: relative;
     display: inline-block;
     vertical-align: top;
     cursor: pointer;
-    -webkit-appearance: none;  /**隐藏原生控件**/
+    -webkit-appearance: none;
+    /**隐藏原生控件**/
 
 }
-input[type="radio"]:checked {
+
+.style input[type="radio"]:checked {
     background-color: #af4f9f;
     border: solid 1px #af4f9f;
     /* box-shadow: 0 1px 1px rgba(0,0,0,.1); */
     text-align: center;
     /* background-clip: padding-box; */
 }
-.show{
+
+.show {
     width: 600px;
     height: 100px;
     margin: auto;
     position: relative;
     top: 20px;
 }
-#cp_name{
+
+#cp_name {
     float: left;
     width: 510px;
     height: 100px;
@@ -88,10 +103,11 @@ input[type="radio"]:checked {
     color: rgb(251, 245, 251);
 }
 
-button.change_btn{
+button.change_btn {
     margin-top: 30px;
 }
-.intro{
+
+.intro {
     width: 600px;
     margin: auto;
     font-size: 20px;
@@ -99,7 +115,8 @@ button.change_btn{
     /* background-color: antiquewhite; */
     margin-top: 70px;
 }
-.intro p{
+
+.intro p {
     /* background-color: rgb(109, 90, 64); */
     margin: 5px 0 0 0;
     color: rgb(251, 245, 251);

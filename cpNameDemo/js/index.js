@@ -1,6 +1,5 @@
-
 var sure_btn = document.getElementsByClassName('sure_btn')[0]; //确定按钮
-var change_btn = document.getElementsByClassName('change_btn')[0]; //确定按钮
+var change_btn = document.getElementsByClassName('change_btn')[0]; //换一换按钮
 var name1Input = document.getElementById('name1'); // 输入的name1
 var name2Input = document.getElementById('name2'); // 输入的name2
 var cp_name_span = document.getElementsByClassName('cp_name')[0];
@@ -16,8 +15,8 @@ var chengyuOption = document.getElementsByName("style")[1];
 
 var nameDic = ciyuDicFinal; // 默认词典
 
-//复选框二选一
-function styleOptin(value) {
+//复选框成语词语二选一
+var styleOptin = function (value) {
     if (value == 'ciyu') {
         if (ciyuOption.checked == 'checked') {
             return; // 如果已经选过了则不做任何操作
@@ -38,24 +37,42 @@ function styleOptin(value) {
     }
 }
 
-var clearContent = function (){
+// 清空内容
+var clearContent = function () {
     cp_name_span.innerHTML = '';
     intro_p1.innerHTML = '';
     intro_p2.innerHTML = '';
     intro_p3.innerHTML = '';
     intro_p4.innerHTML = '';
-    change_btn.onclick = null;
+    change_btn.disabled = 'disabled';
+}
+
+// 匹配中文字符，为了走完之后name12Inputvalue内只包含中文
+var chineseStr = function (str) {
+    var reg = /[\u4e00-\u9fa5]/g;
+    if (!str || !str.match(reg)) {
+        return 0;
+    }
+    return str.match(reg).join('');
 }
 
 // 点击确定生成cp名
 sure_btn.onclick = function () {
-    var cpNameArray = cpNames(name1Input, name2Input);
-    // console.log(cpNameArray);
+    var cpNameArray = [];
+    cpNameArray = cpNames(chineseStr(name1Input.value), chineseStr(name2Input.value));
+    if (cpNameArray == '!') {
+        clearContent();
+        return;
+    }
     if (cpNameArray == 0) {
-        cp_name_span.innerHTML = '没找着';
+        clearContent();
+        cp_name_span.innerHTML = 'ε-(´∀｀; ) 没找着';
+        cp_name_span.style.fontSize = '15px';
         return;
     } else {
+        change_btn.removeAttribute('disabled');
         cp_name_span.innerHTML = cpNameArray[0];
+
         if (nameDic == ciyuDicFinal) {
             intro_p1.innerHTML = ciyuDic[cpNameArray[0]];
         } else {
@@ -64,17 +81,17 @@ sure_btn.onclick = function () {
             intro_p3.innerHTML = chengyuDic[cpNameArray[0]][2];
             intro_p4.innerHTML = chengyuDic[cpNameArray[0]][3];
         }
-
     }
-    // 字体大小自适应宽度
+    // 字体大小随字数改变使之适应文本框
     var len = cpNameArray[0].length;
-    // console.log(len)
     cp_name_span.style.fontSize = 100 - (5 * len) + 'px';
 
-    // 点击换一换，换个cp名
     cpNameArray.push('over');
+    // console.log(cpNameArray);
+    // 点击换一换，换个cp名
     var i = 1;
     change_btn.onclick = function () {
+        // console.log(cpNameArray);
         if (cpNameArray.length > i) {
             cp_name_span.innerHTML = cpNameArray[i];
 
@@ -95,7 +112,7 @@ sure_btn.onclick = function () {
             }
 
             // console.log(len)
-            // 字体大小自适应宽度
+            // 字体大小随字数改变使之适应文本框
             len = cpNameArray[i].length;
             cp_name_span.style.fontSize = 100 - (5 * len) + 'px';
             // console.log(cp_name_span.style.fontSize);
@@ -104,21 +121,23 @@ sure_btn.onclick = function () {
             if (i == cpNameArray.length) {
                 i = 0;
             }
-
         }
         // console.log(cpNameArray);
     }
-
-
-
-
 }
 
+
+
 // 生成cp名
-function cpNames(name1Input, name2Input) {
+var cpNames = function (name1Inputvalue, name2Inputvalue) {
+
+    if (!name1Inputvalue || !name2Inputvalue) {
+        return '!';
+    }
+
     // 将两个name转为拼音
-    var name1PinYin = pinyin.getFullChars(name1Input.value).split(' ');
-    var name2PinYin = pinyin.getFullChars(name2Input.value).split(' ');
+    var name1PinYin = pinyin.getFullChars(name1Inputvalue).split(' ');
+    var name2PinYin = pinyin.getFullChars(name2Inputvalue).split(' ');
 
     // 数组去重
     name1PinYin = Array.from(new Set(name1PinYin));
@@ -154,13 +173,12 @@ function cpNames(name1Input, name2Input) {
                     }
                 }
             }
-
         }
     }
     return strArray;
 }
 // arrayIntersection取两数组重合部分（有更优化对方式吗？？？？？？？）
-function arrayIntersection(a, b) {
+var arrayIntersection = function (a, b) {
     var ai = 0,
         bi = 0;
     var result = new Array();
@@ -177,10 +195,9 @@ function arrayIntersection(a, b) {
 }
 
 // 至少有两个音相同
-function doubleYin(array, yin) {
+var doubleYin = function (array, yin) {
     var obj = {};
     var doubleArray = [];
-
     for (var i = 0; i < array.length; i++) {
         var yinArray = pinyin.getFullChars(array[i]).split(' ');
         // console.log(yinArray[i]);
@@ -201,22 +218,9 @@ function doubleYin(array, yin) {
 }
 
 
-function shiying(textWidth) {
+var shiying = function (textWidth) {
     // 字体大小自适应宽度
     var textWidth = cp_name_span.offsetWidth;
     var scale = hdWidth / textWidth;
     cp_name_span.style.fontSize = scale * 70 + '%';
-}
-
-// 加载函数
-function addLoadEvent(func) {
-    var oldonload = window.onload;
-    if (typeof window.onload != 'function') {
-        window.onload = func;
-    } else {
-        window.onload = function () {
-            oldonload();
-            func();
-        }
-    }
 }
